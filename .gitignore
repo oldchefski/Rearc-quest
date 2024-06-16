@@ -1,0 +1,41 @@
+# Node.js
+node_modules
+npm-debug.log
+yarn-error.log
+package-lock.json
+.pnpm-debug.log
+.pnpm-store/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Temporary folders
+.temp/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+*.tfvars.json
+.terraform/
+.terraform.lock.hcl
+.terraformrc
+terraform.rc
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
