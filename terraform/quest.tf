@@ -2,6 +2,20 @@ resource "aws_security_group" "quest_secgrp" {
   vpc_id = aws_vpc.main_vpc.id
 
   ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
@@ -24,22 +38,35 @@ resource "aws_lb" "quest_lb" {
   subnets             = aws_subnet.quest_subnets[*].id
 }
 
-resource "aws_lb_target_group" "quest_trgt_grp" {
-  name        = "quest-lb-target-group"
+resource "aws_lb_target_group" "quest_trgt_http" {
+  name        = "quest-lb-target-http"
   target_type = "ip"
   port        = 3000
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main_vpc.id
 }
 
-resource "aws_lb_listener" "quest_listener" {
+resource "aws_lb_listener" "quest_listener_80" {
   load_balancer_arn = aws_lb.quest_lb.arn
-  port              = "3000"
+  port              = "80"
   protocol          = "HTTP"
 
   default_action {
     type              = "forward"
-    target_group_arn  = aws_lb_target_group.quest_trgt_grp.arn
+    target_group_arn  = aws_lb_target_group.quest_trgt_http.arn
+  }
+}
+
+resource "aws_lb_listener" "quest_listener_443" {
+  load_balancer_arn = aws_lb.quest_lb.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "arn:aws:acm:us-east-2:670620370144:certificate/2c468547-3234-47ec-96ca-f9c1517dc296"
+
+  default_action {
+    type              = "forward"
+    target_group_arn  = aws_lb_target_group.quest_trgt_http.arn
   }
 }
 
@@ -85,7 +112,7 @@ resource "aws_ecs_service" "quest_service" {
   }
 
   load_balancer {
-    target_group_arn  = aws_lb_target_group.quest_trgt_grp.arn
+    target_group_arn  = aws_lb_target_group.quest_trgt_http.arn
     container_name    = "rearc-quest"
     container_port    = 3000
   }
