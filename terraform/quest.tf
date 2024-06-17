@@ -92,6 +92,12 @@ resource "aws_ecs_task_definition" "quest_task" {
         "containerPort": 3000,
         "hostPort": 3000
       }
+    ],
+    "environment": [
+      {
+        "name": "${var.secret_word_key}",
+        "value": "${var.secret_word_value}"
+      }
     ]
   }
 ]
