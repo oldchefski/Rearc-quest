@@ -41,17 +41,17 @@ Allows all outbound traffic on any port using any protocol destined for the defa
 A few resources are needed to configure an Application Load Balancer for this task:
 - The load balancer itself `quest_lb`.
 - Two listeners which will accept connections on:
-    - `quest_listener_80`: HTTP
-    - `quest_listener_443`: HTTPS
+    - 80/TCP (HTTP): `quest_listener_80`
+    - 443/TCP (HTTPS):`quest_listener_443`
 3. A target group, `quest_trgt_grp`, that will receive forwarded connections on 3000/TCP.
 
 ##### Elastic Container Service
 Using the Elastic Container Serivce with Fargate for the Quest is ideal as it will allow us to only use the resources needed to
-run the container, and we avoid the need to configure and run docker on a self-managed EC2 Instance.
+run the container and we avoid the need to configure and run docker on a self-managed EC2 Instance. 
 
-- An ECS Cluster is defined as `quest_cluster`
-- An ECS Task is defined for our app as `quest_task`:
-    - An execution role is assigned
+- An ECS Cluster to hold our resources is defined as `quest_cluster`
+- An ECS Task is created for our app as `quest_task`:
+    - An execution IAM role is assigned to provide access to necessary AWS resources.
     - CPU and Memory requirements for the task are set.
     - The application container to use is defined and the `SECRET_WORD` environment variable is passed in.
 - An ECS Service created as `quest_service` which configures our Image to be run in FARGATE.
