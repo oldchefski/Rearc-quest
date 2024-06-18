@@ -33,7 +33,7 @@ A route table is created and attached to the VPC. Default routes are added to th
 
 #### terraform/quest.tf
 ##### Security Groups
-A security group is created for use with our application. This SG will allow our app to send and recieve to it's clients.
+A security group is created for use with our application. This SG will allow our app to send and recieve to its clients.
 Allows inbound ports 80/TCP, 443/TCP, 3000/TCP from any source address. 
 Allows all outbound traffic on any port using any protocol destined for the default gateway.   
 
