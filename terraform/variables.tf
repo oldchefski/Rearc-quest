@@ -15,3 +15,9 @@ variable "secret_word_value" {
   description = "Injects an environment variable (SECRET_WORD) into the Docker container"
   default     = "TwelveFactor"
 }
+
+variable "ssl_cert_arn" {
+  type        = string
+  description = "Loadbalancer SSL Certificate ARN"
+  default     = "replace with cert arn"
+}
